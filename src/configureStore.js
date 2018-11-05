@@ -2,29 +2,34 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import type { Middleware } from 'redux';
+import { loadState, saveState } from './localStorage';
 
-// import rootEpic from './epics/';
-// import appReducer from './reducers';
+import rootEpic from './epics/';
+import appReducer from './reducers';
 
-const rootEpic = x => x;
-const appReducer = x => x;
+const persistedState = loadState();
 
 export default () => {
-    const epicMiddleware = createEpicMiddleware();
+  const epicMiddleware = createEpicMiddleware();
 
-  const middleWares: Array<Middleware> = [
+  const middleWares = [
     epicMiddleware,
   ];
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   /* eslint-enable */
 
-  const store = createStore(appReducer, /* preloadedState, */ composeEnhancers(
-      applyMiddleware(...middleWares)
-      ));
-    
-    epicMiddleware.run(rootEpic);
+  const store = createStore(appReducer, persistedState, composeEnhancers(
+    applyMiddleware(...middleWares)
+  ));
 
-    return store;
+  // store.subscribe(() => {
+  //   saveState({
+  //     auth: store.getState().auth,
+  //   });
+  // });
+    
+  epicMiddleware.run(rootEpic);
+
+  return store;
 };

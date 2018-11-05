@@ -1,45 +1,36 @@
-import React, { Component } from 'react';
+import React, { useEffect, Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Redirect,
   withRouter
-} from "react-router-dom"
-
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
+} from "react-router-dom";
+import { bindActionCreators } from 'redux';
+import {connect} from "react-redux";
+import Login from '../Login';
+import { hashFunction } from '../../utils';
+import { login, logout } from '../../actions/auth';
 
 function Protected() {
   return <h3>Protected</h3>;
 }
 
-function Layout() {
-  const accessToken = new URLSearchParams(window.location.search).get("access_token");
-  if(accessToken) {
-    fakeAuth.authenticate(() => {})
-  }
+function Layout({ stateHash, auth, actions }) {
+  const urlParams = new URLSearchParams(window.location.hash);
+  const accessToken = urlParams.get("#access_token");
+  const stateHashParam = urlParams.get("state");
+
+  useEffect(() => {
+    if(!auth.isAuthenticated && accessToken && stateHashParam === stateHash) {
+      actions.login(accessToken);
+    }
+  }, []);
   
   return (
     <>
-      {!fakeAuth.isAuthenticated ? (
-        <div>
-          <ul>
-            <li>
-              <a href="https://gitlab.com/oauth/authorize?client_id=e5a8792a796b220afd35e3ee7ef88674ea11c20070ec72ca3d160606faabab07&redirect_uri=https://zarcode.github.io/gitlab-ci-pwa&response_type=token&state=YOUR_UNIQUE_STATE_HASH">Login</a>
-              {/* <Link to="/protected">Login</Link> */}
-            </li>
-          </ul>
-        </div>
+      {!auth.isAuthenticated ? (
+        <Login hash={stateHash}/>
       ) : (
         <Router>
           <div>
@@ -51,4 +42,18 @@ function Layout() {
   );
 }
 
-export default Layout;
+function mapStateToProps(state) {
+	return {
+    // stateHash: hashFunction(state),
+    stateHash: "hello",
+    auth: state.auth,
+	};
+};
+
+function mapDispatchToProps(dispatch) {
+  return { 
+    actions: bindActionCreators({ login, logout }, dispatch),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

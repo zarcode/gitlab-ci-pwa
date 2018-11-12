@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://zarcode.github.io/gitlab-ci-pwa",
   "dependencies": {
+    "crocks": "^0.11.1",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
     "react-redux": "^5.1.0",

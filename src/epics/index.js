@@ -1,4 +1,10 @@
 import { combineEpics } from 'redux-observable';
-import { saveAuthState } from './auth';
+import { login, logout } from './auth';
+import { loadProjects } from './projects';
+import { loadPipelines } from './pipelines';
 
-export default combineEpics(saveAuthState);
+export default combineEpics(
+    login, logout,
+    loadProjects,
+    loadPipelines,
+);

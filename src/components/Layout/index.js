@@ -1,7 +1,8 @@
-import React, { useEffect, Component } from 'react';
+import React, { useEffect, Component, lazy, Suspense } from 'react';
 import {
   BrowserRouter as Router,
   Route,
+  Switch,
   Link,
   Redirect,
   withRouter
@@ -11,10 +12,8 @@ import {connect} from "react-redux";
 import Login from '../Login';
 import { hashFunction } from '../../utils';
 import { login, logout } from '../../actions/auth';
-
-function Protected() {
-  return <h3>Protected</h3>;
-}
+const Projects = lazy(() => import('../Projects'));
+const Pipelines = lazy(() => import('../Pipelines'));
 
 function Layout({ stateHash, auth, actions }) {
   const urlParams = new URLSearchParams(window.location.hash);
@@ -26,6 +25,8 @@ function Layout({ stateHash, auth, actions }) {
       actions.login(accessToken);
     }
   }, []);
+
+  // console.log(Projects);
   
   return (
     <>
@@ -34,7 +35,13 @@ function Layout({ stateHash, auth, actions }) {
       ) : (
         <Router>
           <div>
-            <Route path="/" component={Protected} />
+            <button onClick={actions.logout}>Logout</button>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <Route exact path="/" component={Projects} />
+                <Route path="/pipelines" component={Pipelines} />
+              </Switch>
+            </Suspense>
           </div>
         </Router>
       )}

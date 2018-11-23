@@ -13,7 +13,6 @@ import * as api from '../api';
 export const loadProjects = (action, state) =>
   action.ofType('FETCH_PROJECTS').pipe(
     switchMap(() => {
-      console.log("user", state.value.user)
       const requestAction = from(api.fetchProjects({
         token: state.value.auth.token,
         userId: state.value.user.id,

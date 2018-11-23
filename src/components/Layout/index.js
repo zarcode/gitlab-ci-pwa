@@ -12,8 +12,9 @@ import {connect} from "react-redux";
 import Login from '../Login';
 import { hashFunction } from '../../utils';
 import { login, logout } from '../../actions/auth';
+// import Project from '../Project';
 const Projects = lazy(() => import('../Projects'));
-const Pipelines = lazy(() => import('../Pipelines'));
+const Project = lazy(() => import('../Project'));
 
 function Layout({ stateHash, auth, actions }) {
   const urlParams = new URLSearchParams(window.location.hash);
@@ -39,7 +40,7 @@ function Layout({ stateHash, auth, actions }) {
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Projects} />
-                <Route path="/pipelines" component={Pipelines} />
+                <Route path="/project/:projectId" component={Project} />
               </Switch>
             </Suspense>
           </div>

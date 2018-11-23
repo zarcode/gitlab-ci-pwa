@@ -9,14 +9,12 @@ import {
 } from 'rxjs/operators';
 import { saveState } from '../localStorage';
 import * as userActions from '../actions/auth';
-import * as projectsActions from '../actions/projects';
+import { fetchProjects } from '../actions/projects';
 import * as api from '../api';
 
-const save = (state) => {
+const save = (value) => {
   try {
-    saveState({
-      auth: state.value.auth,
-    });
+    saveState(value);
   } catch {
     return {
       type: 'NOT_SAVED'
@@ -33,43 +31,20 @@ export const login = (action$, state) =>
     filter((a: Action) =>
       a.type === 'LOGIN'),
     switchMap(a => {
-
-      // const requestProjectsAction = (user) => from(api.fetchProjects({
-      //   token: state.value.auth.token,
-      //   userId: user.id,
-      // })).pipe(
-      //   switchMap(data => { 
-      //     return of(userActions.userSuccess(user)).pipe(concat(
-      //         of(projectsActions.projectsSuccess(data))
-      //       ))
-      //   }),
-      //   catchError(e => of(projectsActions.projectsFail(e.message)))
-      // );
-      
-      // const requestUserAction = from(api.fetchUser({
-      //   token: state.value.auth.token
-      // })).pipe(
-      //   switchMap(user => {
-      //     return requestProjectsAction(user)
-      //   }),
-      //   catchError(e => of(userActions.userFail(e.message)))
-      // );
-
-      const requestUserAction = from(api.fetchUser({
+      return from(api.fetchUser({
         token: state.value.auth.token
       })).pipe(
-        switchMap(data => {
-          return of(userActions.userSuccess(data)).pipe(concat(
-            of({ type: 'FETCH_PROJECTS' })
+        switchMap(user => {
+          return of(userActions.userSuccess(user)).pipe(concat(
+            of(save({
+                auth: state.value.auth,
+                user,
+            })),
+            of(fetchProjects),
           ))
         }),
         catchError(e => of(userActions.userFail(e.message)))
       );
-
-      return requestUserAction
-        .pipe(concat(
-          save(state),
-        ))
     })
   )
 }
@@ -79,6 +54,9 @@ export const logout = (action$, state) =>
   return action$.pipe(
     filter((a: Action) =>
       a.type === 'LOGOUT'),
-    map(a => save(state))
+    map(a => save({
+      auth: state.value.auth,
+      user: {}
+    }))
   )
 }

@@ -8,14 +8,18 @@ import { fetchProjects } from '../../actions/projects';
 
 function Projects({ projects, actions }) {
   useEffect(() => {
-    // actions.fetchProjects();
+    //todo: fetchProjects will get called twice 
+    // if response was [] on login
+    if(projects.length === 0) {
+      actions.fetchProjects();
+    }
   }, []);
   return (
     <>
       <h2>Projects</h2>
       {projects.map(item => (
         <h3 key={item.id}>
-          <Link to="/pipelines">
+          <Link to={`/project/${item.id}`}>
             {item.name_with_namespace}
           </Link>
         </h3>

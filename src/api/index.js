@@ -1,15 +1,14 @@
 import compose from 'crocks/helpers/compose';
 
 const handleResponse = (raw) =>
-  raw.then(function(response) {
-    if(response.status < 300 && response.status >= 200) {
-      return response.json();
+  raw
+  .then(function(response) {
+    if (!response.ok) {
+      throw Error(response.statusText);
     }
-    throw new Error(response.json());
+    return response;
   })
-  .then(function(json) {
-    return json
-  });
+  .then(r => r.json())
 
 // const splitParams = ({ token, ...rest}) => 
 
@@ -40,4 +39,17 @@ export const fetchProjects = compose(
 export const fetchPipelines = compose(
     handleResponse,
     getRequest,
+    ({ projectId, ...rest }) => ({ url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines`, ...rest})
+  )
+
+export const fetchPipeline = compose(
+    handleResponse,
+    getRequest,
+    ({ projectId, pipelineId, ...rest }) => ({ url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines/${pipelineId}`, ...rest})
+  )
+
+export const fetchPipelineJobs = compose(
+    handleResponse,
+    getRequest,
+    ({ projectId, ...rest }) => ({ url: `https://gitlab.com/api/v4/projects/:id/pipelines/:pipeline_id/jobs`, ...rest})
   )

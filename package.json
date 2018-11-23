@@ -5,6 +5,7 @@
   "homepage": "https://zarcode.github.io/gitlab-ci-pwa",
   "dependencies": {
     "crocks": "^0.11.1",
+    "normalizr": "^3.3.0",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
     "react-redux": "^5.1.0",
@@ -12,6 +13,7 @@
     "react-scripts": "2.0.5",
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
+    "reselect": "^4.0.0",
     "rxjs": "^6.3.3",
     "xxhashjs": "^0.2.2"
   },

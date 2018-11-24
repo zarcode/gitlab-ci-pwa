@@ -6,18 +6,18 @@ import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
 import { fetchProjects } from '../../actions/projects';
 
-function Projects({ projects, actions }) {
+function Projects({ projects, auth, actions }) {
   useEffect(() => {
     //todo: fetchProjects will get called twice 
     // if response was [] on login
-    if(projects.length === 0) {
+    if(auth.isAuthenticated && !projects.loading) {
       actions.fetchProjects();
     }
   }, []);
   return (
     <>
       <h2>Projects</h2>
-      {projects.map(item => (
+      {projects.list.map(item => (
         <h3 key={item.id}>
           <Link to={`/project/${item.id}`}>
             {item.name_with_namespace}
@@ -29,9 +29,9 @@ function Projects({ projects, actions }) {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
 	return {
     projects: state.projects,
+    auth: state.auth,
 	};
 };
 

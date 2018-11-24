@@ -12,6 +12,11 @@ const handleResponse = (raw) =>
 
 // const splitParams = ({ token, ...rest}) => 
 
+const log = (props) => {
+  console.log(props);
+  return props;
+}
+
 const getRequest = ({ url, token, ...rest}) => 
   fetch( 
     url, 
@@ -31,6 +36,7 @@ export const fetchUser = compose(
   )
 
 export const fetchProjects = compose(
+    log,
     handleResponse,
     getRequest,
     ({ userId, ...rest }) => ({ url: `https://gitlab.com/api/v4/users/${userId}/projects`, ...rest})

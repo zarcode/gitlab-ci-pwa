@@ -3,7 +3,6 @@ export const fetchProjects = () => ({
 });
 
 export const projectsSuccess = (response) => { 
-  console.log(response)
   return ({
     type: 'FETCH_PROJECTS_SUCCESS',
     response,

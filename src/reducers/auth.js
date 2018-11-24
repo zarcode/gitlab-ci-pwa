@@ -5,7 +5,7 @@ const initialState = {
 
 const auth = (state = initialState, action) => {
     switch (action.type) {
-        case 'LOGIN':
+        case 'LOGIN_SUCCESS':
             return {
                 isAuthenticated: true,
                 token: action.token,

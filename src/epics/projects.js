@@ -20,6 +20,7 @@ export const loadProjects = (action, state) =>
         map(data => projectsActions.projectsSuccess(data)),
         catchError(e => of(projectsActions.projectsFail(e.message)))
       );
+      
       return requestAction;
         // .takeUntil(action
         //   .filter(futureAction => futureAction.type === 'FETCH_PROJECTS'));

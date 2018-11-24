@@ -1,5 +1,10 @@
 export const login = (token) => ({
-    type: 'LOGIN',
+    type: 'LOGIN_REQUESTED',
+    token,
+});
+
+export const loginSuccess = (token) => ({
+    type: 'LOGIN_SUCCESS',
     token,
 });
 

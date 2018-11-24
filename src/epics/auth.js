@@ -29,10 +29,10 @@ export const login = (action$, state) =>
 {
   return action$.pipe(
     filter((a: Action) =>
-      a.type === 'LOGIN'),
+      a.type === 'LOGIN_REQUESTED'),
     switchMap(a => {
       return from(api.fetchUser({
-        token: state.value.auth.token
+        token: a.token
       })).pipe(
         switchMap(user => {
           return of(userActions.userSuccess(user)).pipe(concat(
@@ -40,7 +40,8 @@ export const login = (action$, state) =>
                 auth: state.value.auth,
                 user,
             })),
-            of(fetchProjects),
+            of(userActions.loginSuccess(a.token)),
+            of(fetchProjects()),
           ))
         }),
         catchError(e => of(userActions.userFail(e.message)))

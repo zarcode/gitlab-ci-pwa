@@ -37,7 +37,10 @@ export const login = (action$, state) =>
         switchMap(user => {
           return of(userActions.userSuccess(user)).pipe(concat(
             of(save({
-                auth: state.value.auth,
+                auth: {
+                  isAuthenticated: true,
+                  token: a.token,
+                },
                 user,
             })),
             of(userActions.loginSuccess(a.token)),

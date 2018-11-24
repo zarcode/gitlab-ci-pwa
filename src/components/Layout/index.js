@@ -12,9 +12,13 @@ import {connect} from "react-redux";
 import Login from '../Login';
 import { hashFunction } from '../../utils';
 import { login, logout } from '../../actions/auth';
+let { root } = 
+  process.env.NODE_ENV === 'production' ? 
+  require('../../config.prod.json') : require('../../config.dev.json');
 // import Project from '../Project';
 const Projects = lazy(() => import('../Projects'));
 const Project = lazy(() => import('../Project'));
+const NoMatch = lazy(() => import('../NoMatch'));
 
 function Layout({ stateHash, auth, actions }) {
   const urlParams = new URLSearchParams(window.location.hash);
@@ -39,8 +43,9 @@ function Layout({ stateHash, auth, actions }) {
             <button onClick={actions.logout}>Logout</button>
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
-                <Route exact path="/" component={Projects} />
-                <Route path="/project/:projectId" component={Project} />
+                <Route exact path={`${root}/`} component={Projects} />
+                <Route path={`${root}/project/:projectId`} component={Project} />
+                <Route component={NoMatch} />
               </Switch>
             </Suspense>
           </div>

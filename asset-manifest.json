@@ -1,7 +1,7 @@
 {
   "main.css": "/gitlab-ci-pwa/static/css/main.e771aea6.chunk.css",
-  "main.js": "/gitlab-ci-pwa/static/js/main.18af57cc.chunk.js",
-  "main.js.map": "/gitlab-ci-pwa/static/js/main.18af57cc.chunk.js.map",
+  "main.js": "/gitlab-ci-pwa/static/js/main.03d3b1fc.chunk.js",
+  "main.js.map": "/gitlab-ci-pwa/static/js/main.03d3b1fc.chunk.js.map",
   "static/js/1.764561d6.chunk.js": "/gitlab-ci-pwa/static/js/1.764561d6.chunk.js",
   "static/js/1.764561d6.chunk.js.map": "/gitlab-ci-pwa/static/js/1.764561d6.chunk.js.map",
   "static/js/2.17ee3a4b.chunk.js": "/gitlab-ci-pwa/static/js/2.17ee3a4b.chunk.js",
@@ -14,6 +14,6 @@
   "runtime~main.js.map": "/gitlab-ci-pwa/static/js/runtime~main.f45d6884.js.map",
   "static/css/main.e771aea6.chunk.css.map": "/gitlab-ci-pwa/static/css/main.e771aea6.chunk.css.map",
   "index.html": "/gitlab-ci-pwa/index.html",
-  "precache-manifest.1570bc0ba2e182d30c3d88d20cb9af64.js": "/gitlab-ci-pwa/precache-manifest.1570bc0ba2e182d30c3d88d20cb9af64.js",
+  "precache-manifest.4e95e0d2944cf7cb3e4d085c6b196fc9.js": "/gitlab-ci-pwa/precache-manifest.4e95e0d2944cf7cb3e4d085c6b196fc9.js",
   "service-worker.js": "/gitlab-ci-pwa/service-worker.js"
 }

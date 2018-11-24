@@ -1,11 +1,17 @@
 import { createSelector } from 'reselect';
 const initialState = {
   byId: {},
-  ids: []
+  ids: [],
+  loading: false,
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'FETCH_PIPELINES':
+      return {
+        ...state,
+        loading: true,
+      }
     case 'FETCH_PIPELINES_SUCCESS':
       return {
         byId: {
@@ -15,10 +21,14 @@ export default (state = initialState, action) => {
         ids: [
           ...state.ids,
           ...action.response.result,
-        ]
+        ],
+        loading: false,
       };
     case 'FETCH_PIPELINES_FAIL':
-      return state;
+      return {
+        ...state,
+        loading: false,
+      }
     default:
       return state;
   }
@@ -26,6 +36,7 @@ export default (state = initialState, action) => {
 
 export const getById = (state: any) => state.pipelines.byId;
 export const getIds = (state: any) => state.pipelines.ids;
+export const getLoadingState = (state: any) => state.pipelines.loading;
 export const getPipelines = createSelector([getIds, getById], (allIds, allById) =>
 allIds.map(id => allById[id]));
   

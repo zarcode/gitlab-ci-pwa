@@ -6,9 +6,14 @@ import configureStore from './configureStore';
 const store = configureStore();
 
 const App = () => (
-  <Provider store={store}>
-    <Layout />
-  </Provider>
+  <>
+    <header>
+      <h1>Gitlab CI App</h1>
+    </header>
+    <Provider store={store}>
+      <Layout />
+    </Provider>
+  </>
 );
 
 export default App;

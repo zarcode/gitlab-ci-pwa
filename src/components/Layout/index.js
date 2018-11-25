@@ -30,26 +30,28 @@ function Layout({ stateHash, auth, actions }) {
       actions.login(accessToken);
     }
   }, []);
-
-  // console.log(Projects);
   
   return (
     <>
       {!auth.isAuthenticated ? (
         <Login hash={stateHash}/>
       ) : (
-        <Router>
-          <div>
+        <>
+          <nav>
             <button onClick={actions.logout}>Logout</button>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Switch>
-                <Route exact path={`${root}/`} component={Projects} />
-                <Route path={`${root}/project/:projectId`} component={Project} />
-                <Route component={NoMatch} />
-              </Switch>
-            </Suspense>
-          </div>
-        </Router>
+          </nav>
+          <main>
+            <Router>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                  <Route exact path={`${root}/`} component={Projects} />
+                  <Route path={`${root}/project/:projectId`} component={Project} />
+                  <Route component={NoMatch} />
+                </Switch>
+              </Suspense>
+            </Router>
+          </main>
+        </>
       )}
     </>
   );

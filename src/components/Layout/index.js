@@ -1,4 +1,4 @@
-import React, { useEffect, Component, lazy, Suspense } from 'react';
+import React, { useEffect, useState, Component, lazy, Suspense } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import Login from '../Login';
 import { hashFunction } from '../../utils';
 import { login, logout } from '../../actions/auth';
+import { loadAny } from '../../localStorage';
 let { root } = 
   process.env.NODE_ENV === 'production' ? 
   require('../../config.prod.json') : require('../../config.dev.json');
@@ -20,14 +21,24 @@ const Projects = lazy(() => import('../Projects'));
 const Project = lazy(() => import('../Project'));
 const NoMatch = lazy(() => import('../NoMatch'));
 
-function Layout({ stateHash, auth, actions }) {
+function Layout({ state, actions }) {
+  const { auth } = state;
   const urlParams = new URLSearchParams(window.location.hash);
   const accessToken = urlParams.get("#access_token");
   const stateHashParam = urlParams.get("state");
+  const [stateHash, setStateHash] = useState();
+  
+  
+  // const stateHash = hashFunction(state);
+  
 
   useEffect(() => {
-    if(!auth.isAuthenticated && accessToken && stateHashParam === stateHash) {
+    if(!auth.isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
       actions.login(accessToken);
+    }
+
+    if(!auth.isAuthenticated && !stateHashParam) {
+      setStateHash(hashFunction(state));
     }
   }, []);
   
@@ -59,9 +70,7 @@ function Layout({ stateHash, auth, actions }) {
 
 function mapStateToProps(state) {
 	return {
-    // stateHash: hashFunction(state),
-    stateHash: "hello",
-    auth: state.auth,
+    state,
 	};
 };
 

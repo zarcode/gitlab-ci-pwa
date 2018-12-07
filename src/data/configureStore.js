@@ -1,8 +1,6 @@
-/* @flow */
-
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
-import { loadState, saveState } from './localStorage';
+import { loadState } from './localStorage';
 
 import rootEpic from './epics/';
 import appReducer from './reducers';
@@ -20,9 +18,12 @@ const initialAuth = {
   token: undefined,
 }
 
+const initialUser = {}
+
 const data = {
   projects: initProjects,
   auth: initialAuth,
+  user: initialUser,
   ...persistedState,
 }
 

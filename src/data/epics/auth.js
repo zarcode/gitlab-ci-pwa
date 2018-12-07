@@ -8,7 +8,8 @@ import {
   tap,
 } from 'rxjs/operators';
 import { saveState } from '../localStorage';
-import * as userActions from '../actions/auth';
+import * as authActions from '../reducers/auth';
+import * as userActions from '../reducers/user';
 import { fetchProjects } from '../reducers/projects';
 import * as api from '../api';
 
@@ -32,18 +33,18 @@ export const login = (action$, state) =>
       a.type === 'LOGIN_REQUESTED'),
     switchMap(a => {
       return from(api.fetchUser({
-        token: a.token
+        token: a.payload
       })).pipe(
         switchMap(user => {
           return of(userActions.userSuccess(user)).pipe(concat(
             of(save({
                 auth: {
                   isAuthenticated: true,
-                  token: a.token,
+                  token: a.payload,
                 },
                 user,
             })),
-            of(userActions.loginSuccess(a.token)),
+            of(authActions.loginSuccess(a.payload)),
             of(fetchProjects()),
           ))
         }),

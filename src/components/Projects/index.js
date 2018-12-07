@@ -15,13 +15,13 @@ function Projects({ projects, auth, actions }) {
   return (
     <>
       <h2>Projects</h2>
-      {/* {projects.list.map(item => (
+      {projects.list.map(item => (
         <h3 key={item.id}>
           <Link to={`/project/${item.id}`}>
             {item.name_with_namespace}
           </Link>
         </h3>
-      ))} */}
+      ))}
     </>
   );
 }

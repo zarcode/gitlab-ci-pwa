@@ -15,8 +15,14 @@ const initProjects = {
   error: undefined,
 }
 
+const initialAuth = {
+  isAuthenticated: false,
+  token: undefined,
+}
+
 const data = {
   projects: initProjects,
+  auth: initialAuth,
   ...persistedState,
 }
 

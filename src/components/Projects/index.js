@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
-import { fetchProjects } from '../../data/actions/projects';
+import { fetchProjects } from '../../data/reducers/projects';
 
 function Projects({ projects, auth, actions }) {
   useEffect(() => {

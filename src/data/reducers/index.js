@@ -12,7 +12,7 @@ import { combineReducers } from '../helpers'
 
 // reducers :: Reducer
 const reducers = combineReducers([
-    // auth,
+    auth,
     projects,
     // pipelines,
     // user,

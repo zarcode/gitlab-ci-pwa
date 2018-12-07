@@ -9,7 +9,7 @@ import {
 } from 'rxjs/operators';
 import { saveState } from '../localStorage';
 import * as userActions from '../actions/auth';
-import { fetchProjects } from '../actions/projects';
+import { fetchProjects } from '../reducers/projects';
 import * as api from '../api';
 
 const save = (value) => {

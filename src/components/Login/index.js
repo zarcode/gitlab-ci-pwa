@@ -1,5 +1,5 @@
 import React from 'react';
-import { saveAny } from '../../localStorage';
+import { saveAny } from '../../data/localStorage';
 
 let { clientId, domain, root } =
   process.env.NODE_ENV === 'production' ?

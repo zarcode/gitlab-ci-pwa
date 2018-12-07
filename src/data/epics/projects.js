@@ -7,7 +7,7 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 
-import * as projectsActions from '../actions/projects';
+import * as projectsActions from '../reducers/projects';
 import * as api from '../api';
 
 export const loadProjects = (action, state) =>

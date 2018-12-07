@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import Layout from './components/Layout/index';
-import configureStore from './configureStore';
+import configureStore from './data/configureStore';
 
 const store = configureStore();
 

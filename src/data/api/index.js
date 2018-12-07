@@ -36,7 +36,7 @@ export const fetchUser = compose(
   )
 
 export const fetchProjects = compose(
-    log,
+    // log,
     handleResponse,
     getRequest,
     ({ userId, ...rest }) => ({ url: `https://gitlab.com/api/v4/users/${userId}/projects`, ...rest})

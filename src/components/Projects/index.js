@@ -4,26 +4,24 @@ import {
 } from "react-router-dom";
 import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
-import { fetchProjects } from '../../actions/projects';
+import { fetchProjects } from '../../data/actions/projects';
 
 function Projects({ projects, auth, actions }) {
   useEffect(() => {
-    //todo: fetchProjects will get called twice 
-    // if response was [] on login
-    if(auth.isAuthenticated && !projects.loading) {
+    // if(auth.isAuthenticated && !projects.loading) {
       actions.fetchProjects();
-    }
+    // }
   }, []);
   return (
     <>
       <h2>Projects</h2>
-      {projects.list.map(item => (
+      {/* {projects.list.map(item => (
         <h3 key={item.id}>
           <Link to={`/project/${item.id}`}>
             {item.name_with_namespace}
           </Link>
         </h3>
-      ))}
+      ))} */}
     </>
   );
 }

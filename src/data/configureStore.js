@@ -9,6 +9,17 @@ import appReducer from './reducers';
 
 const persistedState = loadState();
 
+const initProjects = {
+  list: [],
+  loading: false,
+  error: undefined,
+}
+
+const data = {
+  projects: initProjects,
+  ...persistedState,
+}
+
 export default () => {
   const epicMiddleware = createEpicMiddleware();
 
@@ -19,7 +30,7 @@ export default () => {
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   /* eslint-enable */
 
-  const store = createStore(appReducer, persistedState, composeEnhancers(
+  const store = createStore(appReducer, data, composeEnhancers(
     applyMiddleware(...middleWares)
   ));
 

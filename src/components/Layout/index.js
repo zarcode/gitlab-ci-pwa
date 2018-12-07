@@ -11,8 +11,8 @@ import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
 import Login from '../Login';
 import { hashFunction } from '../../utils';
-import { login, logout } from '../../actions/auth';
-import { loadAny } from '../../localStorage';
+import { login, logout } from '../../data/actions/auth';
+import { loadAny } from '../../data/localStorage';
 let { root } = 
   process.env.NODE_ENV === 'production' ? 
   require('../../config.prod.json') : require('../../config.dev.json');

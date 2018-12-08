@@ -16,13 +16,16 @@ import safeLift from 'crocks/Maybe/safeLift';
 import liftA2 from 'crocks/helpers/liftA2';
 
 import { fetchPipelines } from '../../data/actions/pipelines';
-import { getPipelines, getLoadingState } from '../../data/reducers/pipelines';
+import { getPipelines, getLoadingState, getLastLoadedPage } from '../../data/reducers/pipelines';
 
 // const goBack = history => history.goBack;
 
-function Project({ pipelines, loading, actions, match, history }) {
+function Project({ pipelines, loading, lastLoadedPage, actions, match, history }) {
   useEffect(() => {
-    if(!loading) {
+    if(
+      !loading &&
+      lastLoadedPage === 0
+    ) {
       compose(
         map(actions.fetchPipelines),
         chain(safe(isNumber)),
@@ -49,6 +52,7 @@ function mapStateToProps(state) {
 	return {
     pipelines: getPipelines(state),
     loading: getLoadingState(state),
+    lastLoadedPage: getLastLoadedPage(state),
 	};
 };
 

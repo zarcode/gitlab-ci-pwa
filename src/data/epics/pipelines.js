@@ -19,8 +19,9 @@ export const loadPipelines = (action$, state) =>
         token: state.value.auth.token,
         projectId: a.projectId,
       })).pipe(
-        switchMap(data => 
-          of(pipelinesActions.pipelinesSuccess(data))
+        switchMap(data => {
+          const page = state.value.pipelines.lastLoadedPage + 1;
+          return of(pipelinesActions.pipelinesSuccess({ data, page }))
           .pipe(
             concat(
               ...data.map(pipeline => of({ 
@@ -30,7 +31,7 @@ export const loadPipelines = (action$, state) =>
               }))
             )
           )
-        ),
+        }),
         // map(data => pipelinesActions.pipelinesSuccess(data)),
         catchError(e => of(pipelinesActions.pipelinesFail(e.message)))
       );

@@ -8,7 +8,11 @@ import { fetchProjects } from '../../data/reducers/projects';
 
 function Projects({ projects, auth, actions }) {
   useEffect(() => {
-    if(auth.isAuthenticated && !projects.loading) {
+    if(
+      auth.isAuthenticated && 
+      !projects.loading &&
+      projects.lastLoadedPage === 0
+    ) {
       actions.fetchProjects();
     }
   }, []);

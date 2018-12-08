@@ -17,7 +17,11 @@ const lnsLoading =
 const lnsError =
   lensPath([ 'pipelines', 'error' ])
 
-// lnsList :: Object -> Lens
+// lnsLastLoadedPage :: Object -> Lens
+const lnsLastLoadedPage =
+  lensPath([ 'pipelines', 'lastLoadedPage' ])
+
+// lnsIds :: Object -> Lens
 const lnsIds =
   lensPath([ 'pipelines', 'ids' ])
 
@@ -30,12 +34,13 @@ export const startLoading = () =>
     modify(over(lnsLoading, constant(true)))
 
 // saveResults :: Object -> State AppState ()
-export const saveResults = (payload) => 
+export const saveResults = ({ data, page }) => 
     modify(
         compose(
             over(lnsLoading, constant(false)),
-            over(lnsById, assign(payload.entities.pipeline)),
-            over(lnsIds, concat(payload.result))
+            over(lnsLastLoadedPage, constant(page)),
+            over(lnsById, assign(data.entities.pipeline)),
+            over(lnsIds, concat(data.result))
         )
     )
 

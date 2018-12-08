@@ -12,6 +12,10 @@ const { modify } = State
 const lnsLoading =
   lensPath([ 'projects', 'loading' ])
 
+// lnsLastLoadedPage :: Object -> Lens
+const lnsLastLoadedPage =
+lensPath([ 'projects', 'lastLoadedPage' ])
+
 // lnsError :: Object -> Lens
 const lnsError =
   lensPath([ 'projects', 'error' ])
@@ -34,11 +38,12 @@ export const logError = (payload) =>
     )
 
 // addToList :: [a] -> State AppState ()
-export const addToList = (payload) => 
+export const addToList = ({ data, page }) => 
     modify(
         compose(
             over(lnsLoading, constant(false)),
-            over(lnsList, concat(payload))
+            over(lnsLastLoadedPage, constant(page)),
+            over(lnsList, concat(data))
         )
     )
 

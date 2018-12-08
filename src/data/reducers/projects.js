@@ -5,6 +5,7 @@ import { addToList, logError, startLoading } from '../models/projects'
 export const initialState = {
   list: [],
   loading: false,
+  lastLoadedPage: 0,
   error: undefined,
 }
 

@@ -35,12 +35,13 @@ import * as schema from '../schema';
 import compose from 'crocks/helpers/compose';
 import flip from 'crocks/combinators/flip';
 
-import { createAction, createReducer } from '../helpers'
+import { createAction, createReducer, lensProp, over } from '../helpers'
 import { startLoading, saveResults, logError } from '../models/pipelines'
 
 export const initialState = {
   byId: {},
   ids: [],
+  lastLoadedPage: 0,
   loading: false,
 }
 
@@ -54,10 +55,16 @@ const FETCH_PIPELINE_FAIL = 'FETCH_PIPELINE_FAIL'
 export const fetchPipelines = 
   createAction(FETCH_PIPELINES)
 
+// export const pipelinesSuccess =
+//   compose(
+//     createAction(FETCH_PIPELINES_SUCCESS),
+//     flip(normalize)(schema.pipelines)
+//   )
+
 export const pipelinesSuccess =
   compose(
     createAction(FETCH_PIPELINES_SUCCESS),
-    flip(normalize)(schema.pipelines)
+    over(lensProp('data'), flip(normalize)(schema.pipelines))
   )
 
 export const pipelinesFail =
@@ -80,9 +87,10 @@ const reducer = createReducer({
 
 export default reducer;
 
-export const getById = (state: any) => state.pipelines.byId;
-export const getIds = (state: any) => state.pipelines.ids;
-export const getLoadingState = (state: any) => state.pipelines.loading;
+export const getById = state => state.pipelines.byId;
+export const getIds = state => state.pipelines.ids;
+export const getLoadingState = state => state.pipelines.loading;
+export const getLastLoadedPage = state => state.pipelines.lastLoadedPage;
 export const getPipelines = createSelector([getIds, getById], (allIds, allById) =>
 allIds.map(id => allById[id]));
   

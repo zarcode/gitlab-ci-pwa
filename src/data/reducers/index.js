@@ -1,12 +1,17 @@
-import auth from './auth';
+import auth, { initialState as initialAuth } from './auth';
 import pipelines from './pipelines';
-import projects from './projects';
-import user from './user';
+import projects, { initialState as initialProjects } from './projects';
+import user, { initialState as initialUser } from './user';
 
 import execWith from 'crocks/State/execWith'
 
 import { combineReducers } from '../helpers'
 
+export const initialState = {
+    projects: initialProjects,
+    auth: initialAuth,
+    user: initialUser,
+}
 // Action a :: { type: String, payload: a }
 // Reducer :: Action a -> Maybe (State AppState ())
 

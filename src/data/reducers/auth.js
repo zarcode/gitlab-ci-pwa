@@ -1,7 +1,7 @@
 import { createAction, createReducer } from '../helpers'
 import { saveToken, resetState } from '../models/auth'
 
-const initialState = {
+export const initialState = {
     isAuthenticated: false,
     token: undefined,
 }

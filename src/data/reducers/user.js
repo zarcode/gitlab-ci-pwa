@@ -1,7 +1,7 @@
 import { createAction, createReducer } from '../helpers'
-import { addUser, logError } from '../models/user'
+import { addUser } from '../models/user'
 
-const initialState = {}
+export const initialState = {}
 
 const FETCH_USER = 'FETCH_USER'
 const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'

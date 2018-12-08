@@ -2,8 +2,7 @@
 import { createAction, createReducer } from '../helpers'
 import { addToList, logError, startLoading } from '../models/projects'
 
-
-const initialState = {
+export const initialState = {
   list: [],
   loading: false,
   error: undefined,

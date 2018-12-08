@@ -3,27 +3,12 @@ import { createEpicMiddleware } from 'redux-observable';
 import { loadState } from './localStorage';
 
 import rootEpic from './epics/';
-import appReducer from './reducers';
+import appReducer, { initialState } from './reducers';
 
 const persistedState = loadState();
 
-const initProjects = {
-  list: [],
-  loading: false,
-  error: undefined,
-}
-
-const initialAuth = {
-  isAuthenticated: false,
-  token: undefined,
-}
-
-const initialUser = {}
-
 const data = {
-  projects: initProjects,
-  auth: initialAuth,
-  user: initialUser,
+  ...initialState,
   ...persistedState,
 }
 

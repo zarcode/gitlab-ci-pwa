@@ -10,8 +10,6 @@ const handleResponse = (raw) =>
   })
   .then(r => r.json())
 
-// const splitParams = ({ token, ...rest}) => 
-
 const log = (props) => {
   console.log(props);
   return props;
@@ -32,30 +30,45 @@ const getRequest = ({ url, token, ...rest}) =>
 export const fetchUser = compose(
     handleResponse,
     getRequest,
-    (props) => ({ url: `https://gitlab.com/api/v4/user`, ...props})
+    (props) => ({ 
+      url: `https://gitlab.com/api/v4/user`, 
+      ...props
+    })
   )
 
 export const fetchProjects = compose(
     // log,
     handleResponse,
     getRequest,
-    ({ userId, ...rest }) => ({ url: `https://gitlab.com/api/v4/users/${userId}/projects`, ...rest})
+    ({ userId, ...rest }) => ({ 
+      url: `https://gitlab.com/api/v4/users/${userId}/projects`, 
+      ...rest
+    })
   )
 
 export const fetchPipelines = compose(
     handleResponse,
     getRequest,
-    ({ projectId, ...rest }) => ({ url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines`, ...rest})
+    ({ projectId, ...rest }) => ({ 
+      url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines`, 
+      ...rest
+    })
   )
 
 export const fetchPipeline = compose(
     handleResponse,
     getRequest,
-    ({ projectId, pipelineId, ...rest }) => ({ url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines/${pipelineId}`, ...rest})
+    ({ projectId, pipelineId, ...rest }) => ({ 
+      url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines/${pipelineId}`, 
+      ...rest
+    })
   )
 
 export const fetchPipelineJobs = compose(
     handleResponse,
     getRequest,
-    ({ projectId, ...rest }) => ({ url: `https://gitlab.com/api/v4/projects/:id/pipelines/:pipeline_id/jobs`, ...rest})
+    ({ projectId, ...rest }) => ({ 
+      url: `https://gitlab.com/api/v4/projects/:id/pipelines/:pipeline_id/jobs`, 
+      ...rest
+    })
   )

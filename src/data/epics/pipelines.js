@@ -8,7 +8,7 @@ import {
   concat,
 } from 'rxjs/operators';
 
-import * as pipelinesActions from '../actions/pipelines';
+import * as pipelinesActions from '../reducers/pipelines';
 // import asObservable from './rxUtils';
 import * as api from '../api';
 

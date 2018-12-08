@@ -1,5 +1,5 @@
 import { normalize } from 'normalizr';
-import * as schema from './schema';
+import * as schema from '../schema';
 
 export const fetchPipelines = (projectId) => ({
   type: 'FETCH_PIPELINES',

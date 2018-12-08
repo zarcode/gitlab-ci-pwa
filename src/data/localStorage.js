@@ -10,7 +10,7 @@ export const saveAny = (key, state) => {
 export const loadAny = (key) => {
   try {
     const serializedState = localStorage.getItem(key);
-    if (serializedState === null) {
+    if (!serializedState) {
       return undefined;
     }
     return JSON.parse(serializedState);

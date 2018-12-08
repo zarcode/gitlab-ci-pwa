@@ -61,7 +61,7 @@ export const logout = (action$, state) =>
       a.type === 'LOGOUT'),
     map(a => save({
       auth: state.value.auth,
-      user: {}
+      user: {},
     }))
   )
 }

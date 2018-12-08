@@ -14,6 +14,7 @@ import { combineReducers } from '../helpers'
 const reducers = combineReducers([
     auth,
     projects,
+    user,
     // pipelines,
     // user,
 ]);

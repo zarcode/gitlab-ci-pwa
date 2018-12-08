@@ -28,10 +28,8 @@ function Layout({ state, actions }) {
   const stateHashParam = urlParams.get("state");
   const [stateHash, setStateHash] = useState();
   
-  
   // const stateHash = hashFunction(state);
   
-
   useEffect(() => {
     if(!auth.isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
       actions.login(accessToken);

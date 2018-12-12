@@ -36,7 +36,7 @@ import compose from 'crocks/helpers/compose';
 import flip from 'crocks/combinators/flip';
 
 import { createAction, createReducer, lensProp, over } from '../helpers'
-import { startLoading, saveResults, logError } from '../models/pipelines'
+import { startLoading, saveResults, logError, updatePipeline } from '../models/pipelines'
 
 export const initialState = {
   byId: {},
@@ -54,12 +54,6 @@ const FETCH_PIPELINE_FAIL = 'FETCH_PIPELINE_FAIL'
 
 export const fetchPipelines = 
   createAction(FETCH_PIPELINES)
-
-// export const pipelinesSuccess =
-//   compose(
-//     createAction(FETCH_PIPELINES_SUCCESS),
-//     flip(normalize)(schema.pipelines)
-//   )
 
 export const pipelinesSuccess =
   compose(
@@ -83,6 +77,7 @@ const reducer = createReducer({
   [FETCH_PIPELINES]: startLoading,
   [FETCH_PIPELINES_SUCCESS]: saveResults,
   [FETCH_PIPELINES_FAIL]: logError,
+  [FETCH_PIPELINE_SUCCESS]: updatePipeline,
 })
 
 export default reducer;

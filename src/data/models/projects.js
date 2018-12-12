@@ -4,36 +4,37 @@ import compose from 'crocks/helpers/compose'
 import concat from 'crocks/pointfree/concat'
 import constant from 'crocks/combinators/constant'
 
-import { lensPath, over } from '../helpers'
+import { lensPath, over, set } from '../helpers'
 
 const { modify } = State
+const parent = 'projects'
 
 // lnsLoading :: Object -> Lens
 const lnsLoading =
-  lensPath([ 'projects', 'loading' ])
+  lensPath([ parent, 'loading' ])
 
 // lnsLastLoadedPage :: Object -> Lens
 const lnsLastLoadedPage =
-lensPath([ 'projects', 'lastLoadedPage' ])
+lensPath([ parent, 'lastLoadedPage' ])
 
 // lnsError :: Object -> Lens
 const lnsError =
-  lensPath([ 'projects', 'error' ])
+  lensPath([ parent, 'error' ])
 
 // lnsList :: Object -> Lens
 const lnsList =
-  lensPath([ 'projects', 'list' ])
+  lensPath([ parent, 'list' ])
 
 // startLoading :: () -> State AppState ()
 export const startLoading = () => 
-    modify(over(lnsLoading, constant(true)))
+    modify(set(lnsLoading, constant(true)))
 
 // logError :: a -> State AppState ()
 export const logError = (payload) => 
     modify(
         compose(
-            over(lnsLoading, constant(false)),
-            over(lnsError, constant(payload))
+            set(lnsLoading, false),
+            set(lnsError, payload)
         )
     )
 
@@ -41,8 +42,8 @@ export const logError = (payload) =>
 export const addToList = ({ data, page }) => 
     modify(
         compose(
-            over(lnsLoading, constant(false)),
-            over(lnsLastLoadedPage, constant(page)),
+            set(lnsLoading, false),
+            set(lnsLastLoadedPage, page),
             over(lnsList, concat(data))
         )
     )

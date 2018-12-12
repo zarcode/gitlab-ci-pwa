@@ -1,6 +1,7 @@
 import { from, of } from 'rxjs';
 import {
   switchMap,
+  mergeMap,
   map,
   filter,
   catchError,
@@ -43,7 +44,7 @@ export const loadPipelines = (action$, state) =>
 
 export const loadPipeline = (action$, state) =>
   action$.ofType('FETCH_PIPELINE').pipe(
-    switchMap((a) => {
+    mergeMap((a) => {
       const requestAction = from(api.fetchPipeline({
         token: state.value.auth.token,
         pipelineId: a.pipelineId,
@@ -53,7 +54,5 @@ export const loadPipeline = (action$, state) =>
         catchError(e => of(pipelinesActions.pipelineFail(e.message)))
       );
       return requestAction;
-        // .takeUntil(action
-        //   .filter(futureAction => futureAction.type === 'FETCH_PIPELINES'));
     })
   );

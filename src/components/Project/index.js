@@ -16,7 +16,11 @@ import safeLift from 'crocks/Maybe/safeLift';
 import liftA2 from 'crocks/helpers/liftA2';
 
 import { fetchPipelines } from '../../data/actions/pipelines';
-import { getPipelines, getLoadingState, getLastLoadedPage } from '../../data/reducers/pipelines';
+import { 
+  getPipelines, 
+  getLoadingState, 
+  getLastLoadedPage 
+} from '../../data/reducers/pipelines';
 
 // const goBack = history => history.goBack;
 

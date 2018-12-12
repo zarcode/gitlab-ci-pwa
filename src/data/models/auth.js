@@ -3,24 +3,25 @@ import State from 'crocks/State'
 import compose from 'crocks/helpers/compose'
 import constant from 'crocks/combinators/constant'
 
-import { lensPath, over } from '../helpers'
+import { lensPath, set } from '../helpers'
 
 const { modify } = State
+const parent = 'auth'
 
 // lnsLoading :: Object -> Lens
 const lnsIsAuthenticated =
-  lensPath([ 'auth', 'isAuthenticated' ])
+  lensPath([ parent, 'isAuthenticated' ])
 
 // lnsError :: Object -> Lens
 const lnsToken =
-  lensPath([ 'auth', 'token' ])
+  lensPath([ parent, 'token' ])
 
 // saveToken :: () -> State AppState ()
 export const saveToken = (token) => 
     modify(
         compose(
-            over(lnsIsAuthenticated, constant(true)),
-            over(lnsToken, constant(token))
+            set(lnsIsAuthenticated, true),
+            set(lnsToken, token)
         )
     )
 
@@ -28,7 +29,7 @@ export const saveToken = (token) =>
 export const resetState = () => 
     modify(
         compose(
-            over(lnsIsAuthenticated, constant(false)),
-            over(lnsToken, constant(undefined))
+            set(lnsIsAuthenticated, false),
+            set(lnsToken, undefined)
         )
     )

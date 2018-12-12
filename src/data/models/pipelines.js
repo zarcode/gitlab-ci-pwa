@@ -3,42 +3,47 @@ import State from 'crocks/State'
 import assign from 'crocks/helpers/assign'
 import compose from 'crocks/helpers/compose'
 import concat from 'crocks/pointfree/concat'
-import constant from 'crocks/combinators/constant'
 
-import { lensPath, over } from '../helpers'
+import { lensPath, over, set, assocPath } from '../helpers'
 
 const { modify } = State
+const parent = 'pipelines'
 
 // lnsLoading :: Object -> Lens
 const lnsLoading =
-  lensPath([ 'pipelines', 'loading' ])
+  lensPath([ parent, 'loading' ])
 
 // lnsError :: Object -> Lens
 const lnsError =
-  lensPath([ 'pipelines', 'error' ])
+  lensPath([ parent, 'error' ])
 
 // lnsLastLoadedPage :: Object -> Lens
 const lnsLastLoadedPage =
-  lensPath([ 'pipelines', 'lastLoadedPage' ])
+  lensPath([ parent, 'lastLoadedPage' ])
 
 // lnsIds :: Object -> Lens
 const lnsIds =
-  lensPath([ 'pipelines', 'ids' ])
+  lensPath([ parent, 'ids' ])
 
 // lnsById :: Object -> Lens
 const lnsById =
-  lensPath([ 'pipelines', 'byId' ])
+  lensPath([ parent, 'byId' ])
+
+// lnsById :: Object -> Lens
+const lnsPipelineById = id =>
+  lensPath([ parent, 'byId', id ])
 
 // startLoading :: () -> State AppState ()
 export const startLoading = () => 
-    modify(over(lnsLoading, constant(true)))
+    modify(set(lnsLoading, true))
 
 // saveResults :: Object -> State AppState ()
 export const saveResults = ({ data, page }) => 
     modify(
         compose(
-            over(lnsLoading, constant(false)),
-            over(lnsLastLoadedPage, constant(page)),
+            // todo: use set instead over
+            set(lnsLoading, false),
+            set(lnsLastLoadedPage, page),
             over(lnsById, assign(data.entities.pipeline)),
             over(lnsIds, concat(data.result))
         )
@@ -48,8 +53,22 @@ export const saveResults = ({ data, page }) =>
 export const logError = (payload) => 
     modify(
         compose(
-            over(lnsLoading, constant(false)),
-            over(lnsError, constant(payload))
+            set(lnsLoading, false),
+            set(lnsError, payload)
         )
     )
+
+// updatePipeline :: Object -> State AppState ()
+export const updatePipeline = (payload) =>
+    modify(
+        set(
+            lnsPipelineById(payload.id),
+            payload
+        )
+    )
+
+// export const updatePipeline = (payload) =>
+//     modify(
+//         assocPath([ parent, 'byId', payload.id ], payload)
+//     )
 

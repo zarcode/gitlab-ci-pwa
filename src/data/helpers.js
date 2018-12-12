@@ -4,6 +4,7 @@ import State from 'crocks/State'
 //ramda imports
 import lensPath from 'ramda/src/lensPath'
 import lensProp from 'ramda/src/lensProp'
+import assocPath from 'ramda/src/assocPath'
 import over from 'ramda/src/over'
 import set from 'ramda/src/set'
 
@@ -16,7 +17,7 @@ import prop from 'crocks/Maybe/prop'
 import safe from 'crocks/Maybe/safe'
 
 export {
-  lensPath, over, set, lensProp
+  assocPath, lensPath, over, set, lensProp,
 }
 
 // combineReducers :: [ Reducer ] -> Reducer

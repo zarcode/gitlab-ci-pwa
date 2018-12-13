@@ -1,4 +1,4 @@
 ## Gitlab CI App
 
-Gitlab CI client. Checks on your projects, pipelines and jobs.
+Gitlab CI client. Monitors your projects, pipelines and jobs.
 

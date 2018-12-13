@@ -5,13 +5,15 @@ import {
   concat,
   switchMap,
   catchError,
-  tap,
+  // tap,
 } from 'rxjs/operators';
+
+import * as api from '../api';
 import { saveState } from '../localStorage';
+
 import * as authActions from '../reducers/auth';
 import * as userActions from '../reducers/user';
 import { fetchProjects } from '../reducers/projects';
-import * as api from '../api';
 
 const save = (value) => {
   try {

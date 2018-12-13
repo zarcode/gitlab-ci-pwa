@@ -2,13 +2,11 @@ import { from, of } from 'rxjs';
 import {
   switchMap,
   map,
-  filter,
   catchError,
-  takeUntil,
 } from 'rxjs/operators';
 
-import * as projectsActions from '../reducers/projects';
 import * as api from '../api';
+import * as projectsActions from '../reducers/projects';
 
 export const loadProjects = (action, state) =>
   action.ofType('FETCH_PROJECTS').pipe(

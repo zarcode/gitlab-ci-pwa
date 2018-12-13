@@ -1,7 +1,6 @@
 import State from 'crocks/State'
 
 import compose from 'crocks/helpers/compose'
-import constant from 'crocks/combinators/constant'
 
 import { lensPath, set } from '../helpers'
 

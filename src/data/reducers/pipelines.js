@@ -1,42 +1,12 @@
-import { createSelector } from 'reselect';
-
 import { normalize } from 'normalizr';
+import { createSelector } from 'reselect';
 import * as schema from '../schema';
-
-// export default (state = initialState, action) => {
-//   switch (action.type) {
-//     case 'FETCH_PIPELINES':
-//       return {
-//         ...state,
-//         loading: true,
-//       }
-//     case 'FETCH_PIPELINES_SUCCESS':
-//       return {
-//         byId: {
-//           ...state.byId,
-//           ...action.response.entities.pipeline,
-//         },
-//         ids: [
-//           ...state.ids,
-//           ...action.response.result,
-//         ],
-//         loading: false,
-//       };
-//     case 'FETCH_PIPELINES_FAIL':
-//       return {
-//         ...state,
-//         loading: false,
-//       }
-//     default:
-//       return state;
-//   }
-// };
 
 import compose from 'crocks/helpers/compose';
 import flip from 'crocks/combinators/flip';
 
-import { createAction, createReducer, lensProp, over } from '../helpers'
-import { startLoading, saveResults, logError, updatePipeline } from '../models/pipelines'
+import { createAction, createReducer, lensProp, over } from '../helpers';
+import { logError, saveResults, startLoading, updatePipeline } from '../models/pipelines';
 
 export const initialState = {
   byId: {},

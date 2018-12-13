@@ -1,9 +1,9 @@
+import execWith from 'crocks/State/execWith'
+
 import auth, { initialState as initialAuth } from './auth';
 import pipelines, { initialState as initialPipelines } from './pipelines';
 import projects, { initialState as initialProjects } from './projects';
 import user, { initialState as initialUser } from './user';
-
-import execWith from 'crocks/State/execWith'
 
 import { combineReducers } from '../helpers'
 

@@ -3,15 +3,12 @@ import {
   switchMap,
   mergeMap,
   map,
-  filter,
   catchError,
-  takeUntil,
   concat,
 } from 'rxjs/operators';
 
-import * as pipelinesActions from '../reducers/pipelines';
-// import asObservable from './rxUtils';
 import * as api from '../api';
+import * as pipelinesActions from '../reducers/pipelines';
 
 export const loadPipelines = (action$, state) =>
   action$.ofType('FETCH_PIPELINES').pipe(

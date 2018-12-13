@@ -1,26 +1,17 @@
 import React, { useEffect } from 'react';
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { bindActionCreators } from 'redux';
-import {
-  Link,
-} from "react-router-dom";
-import {connect} from "react-redux";
+
+import compose from 'crocks/helpers/compose';
 import propPath from 'crocks/Maybe/propPath';
 import safe from 'crocks/Maybe/safe';
-import isNumber from 'crocks/predicates/isNumber';
-import isString from 'crocks/predicates/isString';
-import propPathOr from 'crocks/helpers/propPathOr';
-import compose from 'crocks/helpers/compose';
-import map from 'crocks/pointfree/map';
 import chain from 'crocks/pointfree/chain';
-import safeLift from 'crocks/Maybe/safeLift';
-import liftA2 from 'crocks/helpers/liftA2';
+import map from 'crocks/pointfree/map';
+import isNumber from 'crocks/predicates/isNumber';
 
 import { fetchPipelines } from '../../data/actions/pipelines';
-import { 
-  getPipelines, 
-  getLoadingState, 
-  getLastLoadedPage 
-} from '../../data/reducers/pipelines';
+import { getLastLoadedPage, getLoadingState, getPipelines } from '../../data/reducers/pipelines';
 
 // const goBack = history => history.goBack;
 

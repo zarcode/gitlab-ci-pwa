@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/gitlab-ci-pwa/static/js/runtime~main.16e5684f.js"
   },
   {
-    "revision": "b82f4ebcb48137c79e64",
-    "url": "/gitlab-ci-pwa/static/js/main.b82f4ebc.chunk.js"
+    "revision": "92fcd86c9ab2bcbfa59b",
+    "url": "/gitlab-ci-pwa/static/js/main.92fcd86c.chunk.js"
   },
   {
     "revision": "eece53a57914293723a3",
@@ -24,11 +24,11 @@ self.__precacheManifest = [
     "url": "/gitlab-ci-pwa/static/js/1.79a87dce.chunk.js"
   },
   {
-    "revision": "b82f4ebcb48137c79e64",
+    "revision": "92fcd86c9ab2bcbfa59b",
     "url": "/gitlab-ci-pwa/static/css/main.b11f742f.chunk.css"
   },
   {
-    "revision": "6fa066e52cf4c2771e4753c92f67abd8",
+    "revision": "2beac9ac6a76d667b04d76e236f91f8a",
     "url": "/gitlab-ci-pwa/index.html"
   }
 ];

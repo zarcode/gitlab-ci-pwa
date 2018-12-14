@@ -10,8 +10,16 @@ import chain from 'crocks/pointfree/chain';
 import map from 'crocks/pointfree/map';
 import isNumber from 'crocks/predicates/isNumber';
 
-import { fetchPipelines } from '../../data/actions/pipelines';
-import { getLastLoadedPage, getLoadingState, getPipelines } from '../../data/reducers/pipelines';
+import { 
+  getLastLoadedPage, 
+  getLoadingState, 
+  getPipelines,
+  fetchPipelines
+} from '../../data/reducers/pipelines';
+
+let { root } = 
+  process.env.NODE_ENV === 'production' ? 
+  require('../../config.prod.json') : require('../../config.dev.json');
 
 // const goBack = history => history.goBack;
 
@@ -31,7 +39,7 @@ function Project({ pipelines, loading, lastLoadedPage, actions, match, history }
   }, []);
   return (
     <>
-      <Link to={'/'}>Projects</Link>
+      <Link to={`${root}/`}>Projects</Link>
       <h2>Project</h2>
       {pipelines.map(item => (
         <div key={item.id}>

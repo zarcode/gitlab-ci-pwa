@@ -15,7 +15,7 @@ export const loadPipelines = (action$, state) =>
     switchMap((a) => {
       const requestAction = from(api.fetchPipelines({
         token: state.value.auth.token,
-        projectId: a.projectId,
+        projectId: a.payload,
       })).pipe(
         switchMap(data => {
           const page = state.value.pipelines.lastLoadedPage + 1;
@@ -25,7 +25,7 @@ export const loadPipelines = (action$, state) =>
               ...data.map(pipeline => of({ 
                 type: 'FETCH_PIPELINE',  
                 pipelineId: pipeline.id,
-                projectId: a.projectId,
+                projectId: a.payload,
               }))
             )
           )

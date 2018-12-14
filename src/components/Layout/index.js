@@ -54,7 +54,7 @@ function Layout({ state, actions }) {
               <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
                   <Route exact path={`${root}/`} component={Projects} />
-                  <Route path={`${root}/project/:projectId`} component={Project} />
+                  <Route path={`/project/:projectId`} component={Project} />
                   <Route component={NoMatch} />
                 </Switch>
               </Suspense>

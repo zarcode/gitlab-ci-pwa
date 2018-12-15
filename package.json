@@ -2,7 +2,6 @@
   "name": "gitlab-ci-pwa",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://zarcode.github.io/gitlab-ci-pwa",
   "dependencies": {
     "crocks": "^0.11.1",
     "normalizr": "^3.3.0",
@@ -16,9 +15,11 @@
     "redux-observable": "^1.0.0",
     "reselect": "^4.0.0",
     "rxjs": "^6.3.3",
+    "source-map-explorer": "^1.6.0",
     "xxhashjs": "^0.2.2"
   },
   "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",

@@ -10,6 +10,7 @@ import {
 import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
 import Login from '../Login';
+import Logout from '../Logout';
 import { hashFunction } from '../../utils';
 import { login, logout } from '../../data/reducers/auth';
 import { loadAny } from '../../data/localStorage';
@@ -22,7 +23,7 @@ const Project = lazy(() => import('../Project'));
 const NoMatch = lazy(() => import('../NoMatch'));
 
 function Layout({ state, actions }) {
-  const { auth } = state;
+  const { auth: { isAuthenticated } } = state;
   const urlParams = new URLSearchParams(window.location.hash);
   const accessToken = urlParams.get("#access_token");
   const stateHashParam = urlParams.get("state");
@@ -31,36 +32,36 @@ function Layout({ state, actions }) {
   // const stateHash = hashFunction(state);
   
   useEffect(() => {
-    if(!auth.isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
+    if(!isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
       actions.login(accessToken);
     }
 
-    if(!auth.isAuthenticated && !stateHashParam) {
+    if(!isAuthenticated && !stateHashParam) {
       setStateHash(hashFunction(state));
     }
-  }, []);
+  }, [isAuthenticated]);
   
   return (
     <>
-      {!auth.isAuthenticated ? (
+      {!isAuthenticated ? (
         <Login hash={stateHash}/>
       ) : (
-        <>
-          <nav>
-            <button onClick={actions.logout}>Logout</button>
-          </nav>
-          <main>
-            <Router>
-              <Suspense fallback={<div>Loading...</div>}>
-                <Switch>
-                  <Route exact path={`${root}/`} component={Projects} />
-                  <Route path={`/project/:projectId`} component={Project} />
-                  <Route component={NoMatch} />
-                </Switch>
-              </Suspense>
-            </Router>
-          </main>
-        </>
+        <Router>
+          <>
+            <nav>
+              <Logout logout={actions.logout} />
+            </nav>
+            <main>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Switch>
+                    <Route exact path={`${root}/`} component={Projects} />
+                    <Route path={`/project/:projectId`} component={Project} />
+                    <Route component={NoMatch} />
+                  </Switch>
+                </Suspense>
+            </main>
+          </>
+        </Router>
       )}
     </>
   );

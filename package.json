@@ -22,9 +22,9 @@
     "analyze": "source-map-explorer build/static/js/main.*",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -38,6 +38,7 @@
   ],
   "devDependencies": {
     "gh-pages": "^2.0.1",
+    "react-app-rewired": "^1.6.2",
     "webpack-bundle-analyzer": "^3.0.3"
   }
 }

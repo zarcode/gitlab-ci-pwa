@@ -21,8 +21,28 @@ const Projects = lazy(() => import('../Projects'));
 const Project = lazy(() => import('../Project'));
 const NoMatch = lazy(() => import('../NoMatch'));
 
+function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
 function Layout({ state, actions }) {
-  const { auth } = state;
+  const { auth: { isAuthenticated } } = state;
   const urlParams = new URLSearchParams(window.location.hash);
   const accessToken = urlParams.get("#access_token");
   const stateHashParam = urlParams.get("state");
@@ -31,20 +51,27 @@ function Layout({ state, actions }) {
   // const stateHash = hashFunction(state);
   
   useEffect(() => {
-    if(!auth.isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
+    if(!isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
       actions.login(accessToken);
     }
 
-    if(!auth.isAuthenticated && !stateHashParam) {
+    if(!isAuthenticated && !stateHashParam) {
       setStateHash(hashFunction(state));
     }
   }, []);
+
+  // if(!isAuthenticated) {
+  //   return <Redirect
+  //     to={{
+  //       pathname: "/login",
+  //       // state: { from: props.location }
+  //     }}
+  //   />
+  // }
   
   return (
-    <>
-      {!auth.isAuthenticated ? (
-        <Login hash={stateHash}/>
-      ) : (
+
+ 
         <>
           <nav>
             <button onClick={actions.logout}>Logout</button>
@@ -53,16 +80,16 @@ function Layout({ state, actions }) {
             <Router>
               <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
-                  <Route exact path={`${root}/`} component={Projects} />
-                  <Route path={`/project/:projectId`} component={Project} />
+                  <Route path={`/login`} component={() => <Login hash={stateHash}/>} />
+                  <PrivateRoute exact path={`${root}/`} isAuthenticated={isAuthenticated} component={Projects} />
+                  <PrivateRoute path={`/project/:projectId`} isAuthenticated={isAuthenticated} component={Project} />
                   <Route component={NoMatch} />
                 </Switch>
               </Suspense>
             </Router>
           </main>
         </>
-      )}
-    </>
+ 
   );
 }
 

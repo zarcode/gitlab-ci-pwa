@@ -80,7 +80,7 @@ function Layout({ state, actions }) {
             <Router>
               <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
-                  <Route path={`/login`} component={() => <Login hash={stateHash}/>} />
+                  <Route path={`/login`} component={(props) => <Login hash={stateHash} {...props}/>} />
                   <PrivateRoute exact path={`${root}/`} isAuthenticated={isAuthenticated} component={Projects} />
                   <PrivateRoute path={`/project/:projectId`} isAuthenticated={isAuthenticated} component={Project} />
                   <Route component={NoMatch} />

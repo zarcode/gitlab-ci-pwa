@@ -1,18 +1,34 @@
-import React from 'react';
-import { saveAny } from '../../data/localStorage';
+import React, { useEffect } from 'react';
+import {
+  Redirect,
+} from "react-router-dom";
+
+import curry from 'crocks/helpers/curry'
+import propPath from 'crocks/Maybe/propPath'
+
+import { saveAny, loadAny } from '../../data/localStorage';
 
 let { clientId, domain, root } =
   process.env.NODE_ENV === 'production' ?
     require('../../config.prod.json') : require('../../config.dev.json');
 
-const loginRedirect = (hash, url) => () => {
-  saveAny('stateHash', hash);
-  window.location.href = url;
-}
+function Login({ isAuthenticated, hash, location}) {
+  useEffect(() => {
+    propPath([ 'state', 'from' ])(location)
+    .map(curry(saveAny)('loginFrom'))
+  }, []);
 
-function Login({ hash }) {
   const loginURL = `https://gitlab.com/oauth/authorize?client_id=${clientId}&redirect_uri=${domain}${root}` +
     `&response_type=token&state=${hash}`;
+
+  const loginRedirect = (hash, url) => () => {
+    saveAny('stateHash', hash);
+    window.location.href = url;
+  }
+
+  const loadFrom = loadAny('loginFrom') || { pathname: '/' };
+
+  if (isAuthenticated) return <Redirect to={loadFrom} />;
     
   return (
     <nav>

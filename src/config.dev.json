@@ -1,5 +1,5 @@
 {
-    "domain": "http://localhost:3000",
+    "domain": "http://localhost:3000/login",
     "root": "",
     "clientId": "e5a8792a796b220afd35e3ee7ef88674ea11c20070ec72ca3d160606faabab07"
 }

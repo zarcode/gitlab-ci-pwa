@@ -51,8 +51,15 @@ function Layout({ state, actions }) {
   const stateHashParam = urlParams.get("state");
 
   const [stateHash, setStateHash] = useState();
+  const [offline, setOffline] = useState(!navigator.onLine);
+
   const LoginScreen = (props) => 
     <Login hash={stateHash} isAuthenticated={isAuthenticated} {...props}/>
+
+  const setOfflineStatus = (e) => {
+    console.log(e)
+    setOffline(!navigator.onLine);
+  }
   
   useEffect(() => {
     if(!isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
@@ -63,9 +70,20 @@ function Layout({ state, actions }) {
       setStateHash(hashFunction(state));
     }
   }, [isAuthenticated]);
-  
+
+
+  useEffect(() => {
+    window.addEventListener('online',  setOfflineStatus)
+    window.addEventListener('offline',  setOfflineStatus)
+    return () => {
+      window.removeEventListener('online', setOfflineStatus)
+      window.removeEventListener('offline', setOfflineStatus)
+    }
+  }, []);
+ 
   return (
     <>
+      {offline && <span>Offline</span>}
       {isAuthenticated && (
       <Navigation />)}
       <Router>

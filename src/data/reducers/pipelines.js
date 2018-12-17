@@ -56,6 +56,7 @@ export const getById = state => state.pipelines.byId;
 export const getIds = state => state.pipelines.ids;
 export const getLoadingState = state => state.pipelines.loading;
 export const getLastLoadedPage = state => state.pipelines.lastLoadedPage;
+export const getError = state => state.pipelines.error;
 export const getPipelines = createSelector([getIds, getById], (allIds, allById) =>
 allIds.map(id => allById[id]));
   

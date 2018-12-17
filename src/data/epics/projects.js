@@ -15,7 +15,7 @@ export const loadProjects = (action, state) =>
         token: state.value.auth.token,
         userId: state.value.user.id,
       })).pipe(
-        map(data => { 
+        map(data => {
           const page = state.value.pipelines.lastLoadedPage + 1;
           return projectsActions.projectsSuccess({ data, page })
         }),

@@ -14,7 +14,8 @@ import {
   getLastLoadedPage, 
   getLoadingState, 
   getPipelines,
-  fetchPipelines
+  getError,
+  fetchPipelines,
 } from '../../data/reducers/pipelines';
 
 let { root } = 
@@ -23,7 +24,15 @@ let { root } =
 
 // const goBack = history => history.goBack;
 
-function Project({ pipelines, loading, lastLoadedPage, actions, match, history }) {
+function Project({ 
+  pipelines, 
+  loading, 
+  lastLoadedPage, 
+  error, 
+  actions, 
+  match, 
+  history 
+}) {
   useEffect(() => {
     if(
       !loading &&
@@ -37,6 +46,13 @@ function Project({ pipelines, loading, lastLoadedPage, actions, match, history }
       )(match)
     }
   }, []);
+
+  useEffect(() => {
+    if(error) {
+      alert('Error:' + error);
+    }
+  }, [error]);
+
   return (
     <>
       <Link to={`${root}/`}>Projects</Link>
@@ -56,6 +72,7 @@ function mapStateToProps(state) {
     pipelines: getPipelines(state),
     loading: getLoadingState(state),
     lastLoadedPage: getLastLoadedPage(state),
+    error: getError(state),
 	};
 };
 

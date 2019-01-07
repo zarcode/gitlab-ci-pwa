@@ -8,7 +8,7 @@ import propPath from 'crocks/Maybe/propPath'
 
 import { saveAny, loadAny } from '../../data/localStorage';
 
-let { clientId, domain, root } =
+let { clientId, root } =
   process.env.NODE_ENV === 'production' ?
     require('../../config.prod.json') : require('../../config.dev.json');
 
@@ -18,7 +18,7 @@ function Login({ isAuthenticated, hash, location}) {
     .map(curry(saveAny)('loginFrom'))
   }, []);
 
-  const loginURL = `https://gitlab.com/oauth/authorize?client_id=${clientId}&redirect_uri=${domain}${root}` +
+  const loginURL = `https://gitlab.com/oauth/authorize?client_id=${clientId}&redirect_uri=${window.location.origin}${root}/login` +
     `&response_type=token&state=${hash}`;
 
   const loginRedirect = (hash, url) => () => {

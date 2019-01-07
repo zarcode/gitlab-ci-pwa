@@ -6,6 +6,8 @@ workbox.routing.registerRoute(
   workbox.strategies.networkFirst()
 )
 
+workbox.routing.registerNavigationRoute('/index.html');
+
 self.addEventListener('fetch', event => {
   if (event.request.method === 'POST' || event.request.method === 'DELETE') {
     event.respondWith(

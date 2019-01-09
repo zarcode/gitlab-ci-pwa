@@ -1,4 +1,12 @@
-import compose from 'crocks/helpers/compose';
+import and from 'crocks/logic/and'
+import compose from 'crocks/helpers/compose'
+import isArray from 'crocks/predicates/isArray'
+import isObject from 'crocks/predicates/isObject'
+
+const isElementObject = (a) =>
+    a.reduce((acc, curr) => acc && isObject(curr), true)
+
+const isArrayOfObjects = and(isArray, isElementObject)
 
 const handleResponse = (raw) =>
   raw
@@ -9,6 +17,14 @@ const handleResponse = (raw) =>
     return response;
   })
   .then(r => r.json())
+
+const validation = pred => promise =>
+  promise.then(data => {
+    if(!pred(data)) {
+      throw Error("invalid data");
+    } 
+    return data;
+  })
 
 const log = (props) => {
   console.log(props);
@@ -28,6 +44,7 @@ const getRequest = ({ url, token, ...rest}) =>
   )
 
 export const fetchUser = compose(
+    validation(isObject),
     handleResponse,
     getRequest,
     (props) => ({ 
@@ -37,7 +54,7 @@ export const fetchUser = compose(
   )
 
 export const fetchProjects = compose(
-    // log,
+    validation(isArrayOfObjects),
     handleResponse,
     getRequest,
     ({ userId, ...rest }) => ({ 
@@ -47,6 +64,7 @@ export const fetchProjects = compose(
   )
 
 export const fetchPipelines = compose(
+    validation(isArrayOfObjects),
     handleResponse,
     getRequest,
     ({ projectId, ...rest }) => ({ 
@@ -56,6 +74,7 @@ export const fetchPipelines = compose(
   )
 
 export const fetchPipeline = compose(
+    validation(isObject),
     handleResponse,
     getRequest,
     ({ projectId, pipelineId, ...rest }) => ({ 
@@ -65,6 +84,7 @@ export const fetchPipeline = compose(
   )
 
 export const fetchPipelineJobs = compose(
+    validation(isArrayOfObjects),
     handleResponse,
     getRequest,
     ({ projectId, ...rest }) => ({ 

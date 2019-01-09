@@ -47,7 +47,7 @@ export const login = (action$, state) =>
                 user,
             })),
             of(authActions.loginSuccess(a.payload)),
-            of(fetchProjects()),
+            // of(fetchProjects()),
           ))
         }),
         catchError(e => of(userActions.userFail(e.message)))

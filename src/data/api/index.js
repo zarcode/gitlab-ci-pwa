@@ -2,29 +2,57 @@ import and from 'crocks/logic/and'
 import compose from 'crocks/helpers/compose'
 import isArray from 'crocks/predicates/isArray'
 import isObject from 'crocks/predicates/isObject'
+import isSame from 'crocks/predicates/isSame'
+import ifElse from 'crocks/logic/ifElse'
+import propOr from 'crocks/helpers/propOr'
+import identity from 'crocks/combinators/identity'
 
-const isElementObject = (a) =>
+// isElementObject :: Array -> Boolean
+const isElementObject = a =>
     a.reduce((acc, curr) => acc && isObject(curr), true)
 
+// isArrayOfObjects :: a -> Boolean
 const isArrayOfObjects = and(isArray, isElementObject)
 
-const handleResponse = (raw) =>
-  raw
-  .then(function(response) {
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response;
-  })
-  .then(r => r.json())
+// isOk :: Object -> Boolean
+const isOk = compose(
+  isSame(true),
+  propOr(false, 'ok'),
+);
 
+// throwError :: String -> ()
+const throwError = x => { throw Error(x) }
+
+// toJson :: a -> b
+const toJson = x => x.json()
+
+// getStatusMessage :: Object -> String
+const throwStatusMessage = compose(
+  throwError,
+  propOr('Server error', 'statusText'),
+);
+
+// handleResponse :: Promise -> Promise
+const handleResponse = raw =>
+  raw
+  .then(
+    ifElse(
+      isOk,
+      toJson,
+      throwStatusMessage,
+    )
+  )
+
+// validation :: Pred -> Promise -> Promise
 const validation = pred => promise =>
-  promise.then(data => {
-    if(!pred(data)) {
-      throw Error("invalid data");
-    } 
-    return data;
-  })
+  promise
+  .then(
+    ifElse(
+      pred,
+      identity,
+      x => throwError("Invalid data")
+    )
+  )
 
 const log = (props) => {
   console.log(props);
@@ -42,6 +70,8 @@ const getRequest = ({ url, token, ...rest}) =>
         // body: JSON.stringify(rest),
     }
   )
+
+// const getRequest = fromPromise(getRequest1)
 
 export const fetchUser = compose(
     validation(isObject),

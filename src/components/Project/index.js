@@ -88,6 +88,7 @@ function Project({
     <>
       <Link to={`${root}/`}>Projects</Link>
       <h2>Project</h2>
+      {loading && (<div>Loading...</div>)}
       {pipelines
         .map(toViewModel)
         .map(item => (

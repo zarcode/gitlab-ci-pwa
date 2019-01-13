@@ -30,6 +30,7 @@ function Projects({
   return (
     <>
       <h2>Projects</h2>
+      {loading && (<div>Loading...</div>)}
       {list.map(item => (
         <h3 key={item.id}>
           <Link to={`/project/${item.id}`}>

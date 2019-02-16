@@ -1,11 +1,15 @@
-export const saveAny = (key, state) => {
-  const serializedState = JSON.stringify(state);
-  try {
-    localStorage.setItem(key, serializedState);
-  } catch (err) {
-    console.log(err);
-  }
-};
+import compose from 'crocks/core/compose'
+import bimap from 'crocks/pointfree/bimap'
+import identity from 'crocks/combinators/identity'
+import tryCatch from 'crocks/Result/tryCatch'
+import Pair from 'crocks/Pair'
+
+export const saveAny = (key, state) => compose(
+  tryCatch(
+    val => localStorage.setItem(...val.toArray())
+  ),
+  bimap(identity, JSON.stringify),
+)(Pair(key, state))
 
 export const loadAny = (key) => {
   try {

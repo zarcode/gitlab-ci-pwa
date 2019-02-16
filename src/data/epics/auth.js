@@ -13,20 +13,20 @@ import { saveState } from '../localStorage';
 
 import * as authActions from '../reducers/auth';
 import * as userActions from '../reducers/user';
-import { fetchProjects } from '../reducers/projects';
+// import { fetchProjects } from '../reducers/projects';
 
-const save = (value) => {
-  try {
-    saveState(value);
-  } catch {
-    return {
-      type: 'NOT_SAVED'
-    }
-  }
-  return {
-    type: 'SAVED'
-  }
-}
+import compose from 'crocks/core/compose'
+import either from 'crocks/pointfree/either'
+
+const saveResult = either(
+  _ => ({ type: 'NOT_SAVED' }),
+  _ => ({ type: 'SAVED' })
+);
+
+const save = compose(
+  saveResult,
+  saveState
+)
 
 export const login = (action$, state) => 
 {

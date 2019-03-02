@@ -15,12 +15,13 @@ import * as authActions from '../reducers/auth';
 import * as userActions from '../reducers/user';
 // import { fetchProjects } from '../reducers/projects';
 
+import constant from 'crocks/combinators/constant'
 import compose from 'crocks/core/compose'
 import either from 'crocks/pointfree/either'
 
 const saveResult = either(
-  _ => ({ type: 'NOT_SAVED' }),
-  _ => ({ type: 'SAVED' })
+  constant({ type: 'NOT_SAVED' }),
+  constant({ type: 'SAVED' })
 );
 
 const save = compose(

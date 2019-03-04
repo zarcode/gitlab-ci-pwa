@@ -1,5 +1,6 @@
 import and from 'crocks/logic/and'
 import compose from 'crocks/helpers/compose'
+import composeP from 'crocks/helpers/composeP'
 import isArray from 'crocks/predicates/isArray'
 import isObject from 'crocks/predicates/isObject'
 import isSame from 'crocks/predicates/isSame'
@@ -32,33 +33,7 @@ const throwStatusMessage = compose(
   propOr('Server error', 'statusText'),
 );
 
-// handleResponse :: Promise -> Promise
-const handleResponse = raw =>
-  raw
-  .then(
-    ifElse(
-      isOk,
-      toJson,
-      throwStatusMessage,
-    )
-  )
-
-// validation :: Pred -> Promise -> Promise
-const validation = pred => promise =>
-  promise
-  .then(
-    ifElse(
-      pred,
-      identity,
-      x => throwError("Invalid data")
-    )
-  )
-
-const log = (props) => {
-  console.log(props);
-  return props;
-}
-
+// getRequest :: Object -> Promise
 const getRequest = ({ url, token, ...rest}) => 
   fetch( 
     url, 
@@ -71,12 +46,35 @@ const getRequest = ({ url, token, ...rest}) =>
     }
   )
 
+// validation :: Pred -> Promise -> Promise
+const validation = pred =>
+  ifElse(
+    pred,
+    identity,
+    x => throwError("Invalid data")
+  )
+
+// handleResponse :: Promise -> Promise
+const handleResponse = pred => 
+  composeP(
+    validation(pred),
+    ifElse(
+      isOk,
+      toJson,
+      throwStatusMessage,
+    ),
+    getRequest
+  )
+
+const log = (props) => {
+  console.log(props);
+  return props;
+}
+
 // const getRequest = fromPromise(getRequest1)
 
 export const fetchUser = compose(
-    validation(isObject),
-    handleResponse,
-    getRequest,
+    handleResponse(isObject),
     (props) => ({ 
       url: `https://gitlab.com/api/v4/user`, 
       ...props
@@ -84,9 +82,7 @@ export const fetchUser = compose(
   )
 
 export const fetchProjects = compose(
-    validation(isArrayOfObjects),
-    handleResponse,
-    getRequest,
+    handleResponse(isArrayOfObjects),
     ({ userId, ...rest }) => ({ 
       url: `https://gitlab.com/api/v4/users/${userId}/projects`, 
       ...rest
@@ -94,9 +90,7 @@ export const fetchProjects = compose(
   )
 
 export const fetchPipelines = compose(
-    validation(isArrayOfObjects),
-    handleResponse,
-    getRequest,
+    handleResponse(isArrayOfObjects),
     ({ projectId, ...rest }) => ({ 
       url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines`, 
       ...rest
@@ -104,9 +98,7 @@ export const fetchPipelines = compose(
   )
 
 export const fetchPipeline = compose(
-    validation(isObject),
-    handleResponse,
-    getRequest,
+    handleResponse(isObject),
     ({ projectId, pipelineId, ...rest }) => ({ 
       url: `https://gitlab.com/api/v4/projects/${projectId}/pipelines/${pipelineId}`, 
       ...rest
@@ -114,9 +106,7 @@ export const fetchPipeline = compose(
   )
 
 export const fetchPipelineJobs = compose(
-    validation(isArrayOfObjects),
-    handleResponse,
-    getRequest,
+    handleResponse(isArrayOfObjects),
     ({ projectId, ...rest }) => ({ 
       url: `https://gitlab.com/api/v4/projects/:id/pipelines/:pipeline_id/jobs`, 
       ...rest

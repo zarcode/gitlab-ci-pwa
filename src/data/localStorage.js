@@ -4,15 +4,14 @@ import composeK from 'crocks/helpers/composeK'
 import either from 'crocks/pointfree/either'
 import bimap from 'crocks/pointfree/bimap'
 import chain from 'crocks/pointfree/chain'
+import merge from 'crocks/pointfree/merge'
 import identity from 'crocks/combinators/identity'
 import tryCatch from 'crocks/Result/tryCatch'
 import unary from 'crocks/helpers/unary'
 import Pair from 'crocks/Pair'
 
 export const saveAny = (key, state) => compose(
-  tryCatch(
-    val => localStorage.setItem(...val.toArray())
-  ),
+  tryCatch(merge(localStorage.setItem.bind(localStorage))),
   bimap(identity, JSON.stringify),
 )(Pair(key, state));
 
@@ -21,7 +20,7 @@ compose(
   either(constant(undefined), identity),
   composeK(
     tryCatch(unary(JSON.parse)),
-    tryCatch(x => localStorage.getItem(x))
+    tryCatch(localStorage.getItem.bind(localStorage))
   )
 )
 

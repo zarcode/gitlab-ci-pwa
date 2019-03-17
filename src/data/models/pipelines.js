@@ -4,7 +4,7 @@ import assign from 'crocks/helpers/assign'
 import compose from 'crocks/helpers/compose'
 import concat from 'crocks/pointfree/concat'
 
-import { lensPath, over, set, assocPath } from '../helpers'
+import { lensPath, over, set } from '../helpers'
 
 const { modify } = State
 const parent = 'pipelines'

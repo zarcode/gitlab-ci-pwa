@@ -66,13 +66,6 @@ const handleResponse = pred =>
     getRequest
   )
 
-const log = (props) => {
-  console.log(props);
-  return props;
-}
-
-// const getRequest = fromPromise(getRequest1)
-
 export const fetchUser = compose(
     handleResponse(isObject),
     (props) => ({ 

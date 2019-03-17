@@ -9,7 +9,7 @@ import { fetchProjects } from '../../data/reducers/projects';
 function Projects({ 
   projects: { loading, lastLoadedPage, list, error }, 
   auth, 
-  actions 
+  actions: { fetchProjects }
 }) {
   useEffect(() => {
     if(
@@ -17,9 +17,15 @@ function Projects({
       !loading &&
       lastLoadedPage === 0
     ) {
-      actions.fetchProjects();
+      fetchProjects();
     }
-  }, []);
+  }, 
+  [
+    auth.isAuthenticated, 
+    loading, 
+    lastLoadedPage,
+    fetchProjects
+  ]);
 
   useEffect(() => {
     if(error) {

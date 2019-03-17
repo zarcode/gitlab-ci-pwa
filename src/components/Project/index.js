@@ -61,22 +61,22 @@ function Project({
   loading, 
   lastLoadedPage, 
   error, 
-  actions, 
+  actions: { fetchPipelines }, 
   match, 
   history,
 }) {
 
-  const fetchByRouteParam = 
-    compose(
-      map(actions.fetchPipelines),
-      chain(safe(isNumber)),
-      map(parseInt),
-      propPath(['params', 'projectId'])
-    )
+  useEffect(() => {
+    const fetchByRouteParam =
+      compose(
+        map(fetchPipelines),
+        chain(safe(isNumber)),
+        map(parseInt),
+        propPath(['params', 'projectId'])
+      )
 
-  useEffect(() =>
     !loading && lastLoadedPage === 0 && fetchByRouteParam(match)
-  , []);
+  }, [fetchPipelines, lastLoadedPage, loading]);
 
   useEffect(() => {
     if(error) {

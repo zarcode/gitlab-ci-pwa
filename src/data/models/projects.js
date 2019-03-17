@@ -2,7 +2,6 @@ import State from 'crocks/State'
 
 import compose from 'crocks/helpers/compose'
 import concat from 'crocks/pointfree/concat'
-import constant from 'crocks/combinators/constant'
 
 import { lensPath, over, set } from '../helpers'
 
@@ -27,7 +26,7 @@ const lnsList =
 
 // startLoading :: () -> State AppState ()
 export const startLoading = () => 
-    modify(set(lnsLoading, constant(true)))
+    modify(set(lnsLoading, true))
 
 // logError :: a -> State AppState ()
 export const logError = (payload) => 

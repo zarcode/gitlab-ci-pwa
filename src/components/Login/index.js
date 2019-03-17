@@ -22,7 +22,7 @@ function Login({ isAuthenticated, hash, location}) {
     `&response_type=token&state=${hash}`;
 
   const loginRedirect = (hash, url) => () => {
-    saveAny('stateHash', hash);
+    saveAny('storeHash', hash);
     window.location.href = url;
   }
 

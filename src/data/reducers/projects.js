@@ -6,7 +6,7 @@ export const initialState = {
   list: [],
   loading: false,
   lastLoadedPage: 0,
-  error: undefined,
+  error: null,
 }
 
 const FETCH_PROJECTS = 'FETCH_PROJECTS'

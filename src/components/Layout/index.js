@@ -1,11 +1,9 @@
-import React, { useEffect, useState, Component, lazy, Suspense } from 'react';
+import React, { useEffect, useReducer, useState, lazy, Suspense } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Link,
-  Redirect,
-  withRouter
+  Redirect
 } from "react-router-dom";
 import { bindActionCreators } from 'redux';
 import {connect} from "react-redux";
@@ -44,35 +42,41 @@ function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
   );
 }
 
-function Layout({ state, actions }) {
-  const { auth: { isAuthenticated } } = state;
+function Layout({ store, actions: { login } }) {
+  const { auth: { isAuthenticated } } = store;
   const urlParams = new URLSearchParams(window.location.hash);
   const accessToken = urlParams.get("#access_token");
-  const stateHashParam = urlParams.get("state");
+  const storeHashParam = urlParams.get("state");
 
-  const [stateHash, setStateHash] = useState();
+  const [storeHash, dispatch] = useReducer(reducer, 0);
+  function reducer(state, action) {
+    if (action.type === 'SET_HASH') {
+      return hashFunction(store);
+    }
+
+    return state;
+  }
+
   const [offline, setOffline] = useState(!navigator.onLine);
 
   const LoginScreen = (props) => 
-    <Login hash={stateHash} isAuthenticated={isAuthenticated} {...props}/>
-
-  const setOfflineStatus = (e) => {
-    console.log(e)
-    setOffline(!navigator.onLine);
-  }
+    <Login hash={storeHash} isAuthenticated={isAuthenticated} {...props}/>
   
   useEffect(() => {
-    if(!isAuthenticated && accessToken && stateHashParam === loadAny('stateHash')) {
-      actions.login(accessToken);
+    if(!isAuthenticated && accessToken && storeHashParam === loadAny('storeHash')) {
+      login(accessToken);
     }
 
-    if(!isAuthenticated && !stateHashParam) {
-      setStateHash(hashFunction(state));
+    if(!isAuthenticated && !storeHashParam) {
+      dispatch({ type: 'SET_HASH' })
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, accessToken, storeHashParam, login]);
 
 
   useEffect(() => {
+    function setOfflineStatus(e) {
+      setOffline(!navigator.onLine);
+    }
     window.addEventListener('online',  setOfflineStatus)
     window.addEventListener('offline',  setOfflineStatus)
     return () => {
@@ -111,9 +115,9 @@ function Layout({ state, actions }) {
   );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(store) {
 	return {
-    state,
+    store,
 	};
 };
 

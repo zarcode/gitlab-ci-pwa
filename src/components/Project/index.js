@@ -65,7 +65,7 @@ function Project({
   match, 
   history,
 }) {
-
+  
   useEffect(() => {
     const fetchByRouteParam =
       compose(
@@ -75,8 +75,8 @@ function Project({
         propPath(['params', 'projectId'])
       )
 
-    !loading && lastLoadedPage === 0 && fetchByRouteParam(match)
-  }, [fetchPipelines, lastLoadedPage, loading]);
+    !loading && lastLoadedPage === 0 && !error && fetchByRouteParam(match)
+  }, [fetchPipelines, lastLoadedPage, loading, error]);
 
   useEffect(() => {
     if(error) {
